@@ -54,29 +54,30 @@ export default function WinRate() {
     mang.map(value => {sum += value.win_rate});
     return sum;
   }
-  let tong = sumArray(objects);
+  let tong = sumArray(objects); // tổng phần tử
   let half = sumArray(objects) / 2
   let min = objects[0]
   console.log(objects);
 
-  const run = () => {
-    // TH1 tìm một phần tử thoả dk: arr[i]-tb <= min
-    for (let i = 0; i < objects.length; i++) {
-      if (objects[i].win_rate - half <= min.win_rate && objects[i].win_rate - half >= 0) {
-        return  groubA.push(objects[i]) 
-      } 
-    //Th2 hai phần tử thoả dk
-      else {
-        for(let j = 1, n= 0; j <objects.length; j++){
-          groubA.length=0
-          n = objects[i] + objects[j];
-          if (Math.abs(n - half )<= min.win_rate) {
-          groubA.push(objects[i], objects[j])
-          return groubA
-        }
+  if( 3 < objects.length && objects.length % 2 == 0){
+      // TH1 tìm một phần tử thoả dk: arr[i]-tb <= min
+      for (let i = 0; i < objects.length; i++) {
+        if (objects[i].win_rate - half <= min.win_rate && objects[i].win_rate - half >= 0) {
+          return  groubA.push(objects[i]) 
+        } 
+      //Th2 hai phần tử thoả dk
+        else {
+          for(let j = 1, n= 0; j <objects.length; j++){
+            groubA.length=0
+            n = objects[i] + objects[j];
+            if (Math.abs(n - half )<= min.win_rate) {
+            groubA.push(objects[i], objects[j])
+            return groubA
+          }
+          }
         }
       }
-    }
+    
   }
   
   
@@ -97,7 +98,7 @@ export default function WinRate() {
       </div>
 
       <form onSubmit={handleSubmit}>
-        <h3>Số lượng:   {error === '' ? total : ''}</h3>
+        <h3>Số lượng:   {error === '' ? objects.length : ''}</h3>
         <div style={styleForm}>
           <div>
             <label>Name: </label>
