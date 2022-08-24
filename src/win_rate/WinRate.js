@@ -17,17 +17,19 @@ export default function WinRate() {
   const [objects, setObjects] = useState([])
   const nameRef = useRef()
 
-  const [groubA, setGroubA] = useState([]);
-  const [groubB, setGroubB] = useState([]);
+  
   const [numbers, setNumber] = useState('')
 
   //kiem tra tổng số lượng đầu vào
 
   useEffect(()=>{
+    slipObjects();
+  },[objects])
+
+  useEffect(()=>{
     document.getElementById("fname").disabled = true
     document.getElementById("frate").disabled = true
   },[])
-
   const handleTotal = (value) => {
     if (value < 4 || value % 2 != 0) {
       document.getElementById("fname").disabled = true
@@ -42,11 +44,11 @@ export default function WinRate() {
   const handleSubmit = (e) => {
     e.preventDefault()
     setObjects([...objects, { name: name, win_rate: +rate }].sort((a,b)=>(a.win_rate-b.win_rate)))
-    // setObjects(objects.sort((a,b)))
     setNumber([...numbers, +rate])
     setName('')
     setRate('')
     nameRef.current.focus()
+    
   }
 
   const sumArray = mang => {
@@ -59,7 +61,16 @@ export default function WinRate() {
   let min = objects[0]
   console.log(objects);
 
-  if( 3 < objects.length && objects.length % 2 == 0){
+  if( 3 > objects.length == total) {
+    document.getElementById("fname").disabled = true
+    document.getElementById("frate").disabled = true
+  }
+
+
+  const groubA = []
+  const groubB =[]
+
+  const slipObjects = ()=>{
       // TH1 tìm một phần tử thoả dk: arr[i]-tb <= min
       for (let i = 0; i < objects.length; i++) {
         if (objects[i].win_rate - half <= min.win_rate && objects[i].win_rate - half >= 0) {
@@ -77,8 +88,8 @@ export default function WinRate() {
           }
         }
       }
-    
   }
+
   
   
 
@@ -130,6 +141,18 @@ export default function WinRate() {
         </div>
       </form>
 
+      <h2>Mảng ban đâu</h2>
+      <div>
+          
+            {objects.map((object, index) => (
+              <li key={index}>{object.name} - {object.win_rate}</li>
+            ))
+            }
+          
+        </div>
+
+      <h2>Mảng sau khi tách</h2>
+      {console.log(groubA)}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between'
@@ -137,7 +160,7 @@ export default function WinRate() {
         <div>
           <ul>
             {groubA.map((object, index) => (
-              <li key={index}>{object.name} - {object.rate}</li>
+              <li key={index}>{object.name} - {object.win_rate}</li>
             ))
             }
           </ul>
@@ -146,7 +169,7 @@ export default function WinRate() {
         <div>
           <ul>
             {groubB.map((object, index) => (
-              <li key={index}>{object.name} - {object.rate}</li>
+              <li key={index}>{object.name} - {object.win_rate}</li>
             ))
             }
           </ul>
