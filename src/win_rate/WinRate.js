@@ -1,4 +1,4 @@
-import React, {  useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const styleForm = {
   width: '600px',
@@ -21,70 +21,67 @@ export default function WinRate() {
   const [groubB, setGroubB] = useState([]);
   const [numbers, setNumber] = useState('')
 
-  
-  useEffect(() => {
-    const listRate = localStorage.getItem('todos')
-    const loadedTodos = JSON.parse(listRate)
-    if (loadedTodos) {
-      setNumber(loadedTodos)
-    }
-  }, [])
-
-  useEffect(() => {
-    const listRate = JSON.stringify(numbers)
-    localStorage.setItem('todos', listRate)
-  }, [numbers])
-
-  const newArr = objects.sort((a, b)=> a.rate - b.rate );
-
-  const sum = newArr.reduce((currentValue, value) => currentValue + value.rate, 0);
-
-  const n =2;
-
-
-  const result = [];
-  let s = 0;
-  let j = 0;
-  result[j] = [];
-  for(let i=0; i<newArr.length; i++){
-    
-    if(s <= Math.floor(sum/n)){
-  
-      result[j].push(newArr[i]);
-      s +=newArr[i];
-    }
-    else{    
-      s = 0;
-      j = j + 1;   
-      result[j] = [];
-      result[j].push(newArr[i]);
-    }
-  }
-  
-  console.log(result)
   //kiem tra tổng số lượng đầu vào
+
+  useEffect(()=>{
+    document.getElementById("fname").disabled = true
+    document.getElementById("frate").disabled = true
+  },[])
+
   const handleTotal = (value) => {
-    if(value < 4 || value % 2 != 0){
-      document.getElementById("fname").disabled   = true
-      document.getElementById("frate").disabled   = true
+    if (value < 4 || value % 2 != 0) {
+      document.getElementById("fname").disabled = true
+      document.getElementById("frate").disabled = true
       setError('Nhập số lượng lớn hơn 3 và là số chẵn')
-    }else{
-       setError(""); setTotal(+value)
-       document.getElementById("fname").disabled   = false
-       document.getElementById("frate").disabled   = false
+    } else {
+      setError(""); setTotal(+value)
+      document.getElementById("fname").disabled = false
+      document.getElementById("frate").disabled = false
     }
   }
-
-  const handleSubmit = (e) => { 
+  const handleSubmit = (e) => {
     e.preventDefault()
-    setObjects([...objects,{name : name, rate : +rate}])
+    setObjects([...objects, { name: name, win_rate: +rate }].sort((a,b)=>(a.win_rate-b.win_rate)))
+    // setObjects(objects.sort((a,b)))
     setNumber([...numbers, +rate])
     setName('')
     setRate('')
     nameRef.current.focus()
   }
 
+  const sumArray = mang => {
+    let sum = 0;
+    mang.map(value => {sum += value.win_rate});
+    return sum;
+  }
+  let tong = sumArray(objects);
+  let half = sumArray(objects) / 2
+  let min = objects[0]
+  console.log(objects);
+
+  const run = () => {
+    // TH1 tìm một phần tử thoả dk: arr[i]-tb <= min
+    for (let i = 0; i < objects.length; i++) {
+      if (objects[i].win_rate - half <= min.win_rate && objects[i].win_rate - half >= 0) {
+        return  groubA.push(objects[i]) 
+      } 
+    //Th2 hai phần tử thoả dk
+      else {
+        for(let j = 1, n= 0; j <objects.length; j++){
+          groubA.length=0
+          n = objects[i] + objects[j];
+          if (Math.abs(n - half )<= min.win_rate) {
+          groubA.push(objects[i], objects[j])
+          return groubA
+        }
+        }
+      }
+    }
+  }
   
+  
+
+
 
   return (
     <div style={{ margin: '50px auto' }}>
@@ -131,13 +128,31 @@ export default function WinRate() {
           <button type='submit'>Add</button>
         </div>
       </form>
-      <ul>
-        {objects.map((object,index) => (
-          <li key={index}>{object.name} - {object.rate}</li>
-        ))
-        }
-      </ul>
-      
+
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between'
+      }}>
+        <div>
+          <ul>
+            {groubA.map((object, index) => (
+              <li key={index}>{object.name} - {object.rate}</li>
+            ))
+            }
+          </ul>
+        </div>
+
+        <div>
+          <ul>
+            {groubB.map((object, index) => (
+              <li key={index}>{object.name} - {object.rate}</li>
+            ))
+            }
+          </ul>
+        </div>
+      </div>
+
+
     </div>
   )
 }
