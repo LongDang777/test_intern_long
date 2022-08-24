@@ -17,19 +17,19 @@ export default function WinRate() {
   const [objects, setObjects] = useState([])
   const nameRef = useRef()
 
-  
+
   const [numbers, setNumber] = useState('')
 
   //kiem tra tổng số lượng đầu vào
 
-  useEffect(()=>{
+  useEffect(() => {
     slipObjects();
-  },[objects])
+  }, [objects])
 
-  useEffect(()=>{
+  useEffect(() => {
     document.getElementById("fname").disabled = true
     document.getElementById("frate").disabled = true
-  },[])
+  }, [])
   const handleTotal = (value) => {
     if (value < 4 || value % 2 != 0) {
       document.getElementById("fname").disabled = true
@@ -43,7 +43,7 @@ export default function WinRate() {
   }
   const handleSubmit = (e) => {
     e.preventDefault()
-    setObjects([...objects, { name: name, win_rate: +rate }].sort((a,b)=>(a.win_rate-b.win_rate)))
+    setObjects([...objects, { name: name, win_rate: +rate }].sort((a, b) => (a.win_rate - b.win_rate)))
     setNumber([...numbers, +rate])
     setName('')
     setRate('')
@@ -52,7 +52,7 @@ export default function WinRate() {
 
   const sumArray = mang => {
     let sum = 0;
-    mang.map(value => {sum += value.win_rate});
+    mang.map(value => { sum += value.win_rate });
     return sum;
   }
   let tong = sumArray(objects); // tổng phần tử
@@ -60,38 +60,38 @@ export default function WinRate() {
   let min = objects[0]
   console.log(objects);
 
-  if( 3 > objects.length == total) {
+  if (3 > objects.length == total) {
     document.getElementById("fname").disabled = true
     document.getElementById("frate").disabled = true
   }
 
 
   let groubA = []
-  let groubB =[]
+  let groubB = []
 
-  const slipObjects = ()=>{
-      // TH1 tìm một phần tử thoả dk: arr[i]-tb <= min
-      for (let i = 0; i < objects.length; i++) {
-        if (objects[i].win_rate - half <= min.win_rate && objects[i].win_rate - half >= 0) {
-            groubA.push(objects[i]) 
-            return groubA
-        } 
-      //Th2 hai phần tử thoả dk
-        else {
-          for(let j = 1, n= 0; j <objects.length; j++){
-            groubA.length=0
-            n = objects[i] + objects[j];
-            if (Math.abs(n - half )<= min.win_rate) {
+  const slipObjects = () => {
+    // TH1: một phần tử thoả dk: arr[i]-tb <= min
+    for (let i = 0; i < objects.length; i++) {
+      if (objects[i].win_rate - half <= min.win_rate && objects[i].win_rate - half >= 0) {
+        groubA.push(objects[i])
+        return groubA
+      }
+      //Th2: hai phần tử thoả dk
+      else {
+        for (let j = 1, n = 0; j < objects.length; j++) {
+          groubA.length = 0
+          n = objects[i] + objects[j];
+          if (Math.abs(n - half) <= min.win_rate) {
             groubA.push(objects[i], objects[j])
             return groubA
           }
-          }
         }
       }
+    }
   }
 
-  
-  
+
+
 
 
 
@@ -143,13 +143,13 @@ export default function WinRate() {
 
       <h2>Mảng ban đâu</h2>
       <div>
-          
-            {objects.map((object, index) => (
-              <li key={index}>{object.name} - {object.win_rate}</li>
-            ))
-            }
-          
-        </div>
+
+        {objects.map((object, index) => (
+          <li key={index}>{object.name} - {object.win_rate}</li>
+        ))
+        }
+
+      </div>
 
       <h2>Mảng sau khi tách</h2>
       {console.log(groubA)}
