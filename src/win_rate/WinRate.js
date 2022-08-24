@@ -48,7 +48,6 @@ export default function WinRate() {
     setName('')
     setRate('')
     nameRef.current.focus()
-    
   }
 
   const sumArray = mang => {
@@ -67,14 +66,15 @@ export default function WinRate() {
   }
 
 
-  const groubA = []
-  const groubB =[]
+  let groubA = []
+  let groubB =[]
 
   const slipObjects = ()=>{
       // TH1 tìm một phần tử thoả dk: arr[i]-tb <= min
       for (let i = 0; i < objects.length; i++) {
         if (objects[i].win_rate - half <= min.win_rate && objects[i].win_rate - half >= 0) {
-          return  groubA.push(objects[i]) 
+            groubA.push(objects[i]) 
+            return groubA
         } 
       //Th2 hai phần tử thoả dk
         else {
