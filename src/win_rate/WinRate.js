@@ -24,6 +24,10 @@ export default function WinRate() {
 
   useEffect(() => {
     slipObjects();
+    if (3 > objects.length == total) {
+      document.getElementById("fname").disabled = true
+      document.getElementById("frate").disabled = true
+    }
   }, [objects])
 
   useEffect(() => {
@@ -60,10 +64,7 @@ export default function WinRate() {
   let min = objects[0]
   console.log(objects);
 
-  if (3 > objects.length == total) {
-    document.getElementById("fname").disabled = true
-    document.getElementById("frate").disabled = true
-  }
+ 
 
 
   let groubA = []
