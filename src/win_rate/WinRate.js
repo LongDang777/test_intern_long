@@ -65,12 +65,12 @@ export default function WinRate() {
  
 
   const arr = arrSort(objects)
+  
+  // Tách mảng khi đã đủ số lượng
+  
   let sumA = sum(arrA);
   let sumB = sum(arrB);
   let minusAB = Math.abs(sumA - sumB)
-
-  // Tách mảng khi đã đủ số lượng
-
 
   if (objects.length === total && total > 0) {
     getID('fname').disabled = true
@@ -96,11 +96,22 @@ export default function WinRate() {
   if (sumA > sumB && minusAB > arrA[0].win_rate) {
     let temp = arrA.shift()
     arrB.push(temp)
+    for(let i = 0; i< 50; i++){
+      if (sumA > sumB && minusAB > arrA[0].win_rate) {
+        let temp = arrA.shift()
+        arrB.push(temp)
+      }
+      if(arrA.length === 1){
+        break; 
+      }
+    }
   }
   if (sumA < sumB && minusAB > arrB[0].win_rate) {
     let temp = arrB.shift()
     arrA.push(temp)
   }
+  
+
 
   arrA = arrSort(arrA)
   arrB = arrSort(arrB)
@@ -173,7 +184,7 @@ export default function WinRate() {
               ))
               }
             </ul>
-            {arrA != 0 ? <>Tổng win_rate: {Math.round(sum(arrA) * 100) / 100   }</> : ''}
+            {arrA != 0 ? <>Tổng win_rate: {Math.round(sum(arrA) * 100) / 100}%</> : ''}
 
           </div>
 
@@ -185,7 +196,7 @@ export default function WinRate() {
               ))
               }
             </ul>
-            {arrB != 0 ? <>Tổng win_rate: {Math.round(sum(arrB) * 100) / 100   }</> : ''}
+            {arrB != 0 ? <>Tổng win_rate: {Math.round(sum(arrB) * 100) / 100}%</> : ''}
           </div>
         </div>
 

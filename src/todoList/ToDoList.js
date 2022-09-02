@@ -78,13 +78,17 @@ export default function ToDoList() {
 
       <form onSubmit={handleSubmit}>
         <input
+          className='form-control form-input'
+          autoFocus
+          placeholder='Add todo...'
           style={{ marginBottom: '30px' }}
           type='text'
           ref={inputRef}
           value={todo}
+
           onChange={(e) => setTodo(e.target.value)}
         />
-        <button type='submit'>Add Todo</button>
+        <button type='submit' className='btn-hover color-main'>Add Todo</button>
       </form>
       <ul>
         {todos.map(todo => <li key={todo.id} style={style}>
