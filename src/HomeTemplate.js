@@ -5,11 +5,7 @@ import { history } from './App'
 
 export const HomeTemplate =(props)=> {
 
-  const style = {
-    width: '1000px',
-    margin: '40px auto',
-    textAlign: 'center',
-  }
+
 
   return (
     <Route
@@ -17,17 +13,20 @@ export const HomeTemplate =(props)=> {
       path={props.path}
       render={propsRoute => {
         return <Fragment>
-            <div style={style}>
-              <h3>Intern - Dang Tien Long</h3>
+            <div className='container'>
+              <h3 className='infoName'>Intern - Dang Tien Long</h3>
 
-              <button onClick={() => history.push('/')}>
+              <div className='page'>
+
+              <button className='btn-hover color' onClick={() => history.push('/')}>
                 App To Do List
               </button>
               &#160; &#160; &#160;
 
-              <button onClick={() => history.push('/winrate')}>
+              <button className='btn-hover color' onClick={() => history.push('/winrate')}>
                 App Win Rate
               </button>
+              </div>
 
               <props.component {...propsRoute} />
             </div>
