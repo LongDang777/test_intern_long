@@ -181,3 +181,32 @@ tbody th, tbody td {
 box-shadow: none;
 cursor: default;
 }
+
+
+
+/* todo list */
+.editTodos .form-input {
+  margin-top:  0;
+}
+
+.edit__input{
+  display: flex;
+  align-items: center;
+}
+.color-main.delete{
+  background-image: linear-gradient(to right,
+      #e15125,
+      #eb6544,
+      #fe8904,
+      #eda23f);
+  box-shadow: 0 4px 5px 0 rgba(159, 182, 216, 0.75);
+  line-height: 50%;
+  
+  border-radius: 10px;
+}
+.edit__input .btn-hover {
+  margin: 0;
+}
+.todoText{
+  font-size: 22px;
+}
