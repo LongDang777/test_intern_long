@@ -9,6 +9,8 @@ export default function ToDoList() {
   const inputRef = useRef()
   const editRef = useRef()
   const [error, setError] = useState('')
+  const [errorEdit, setErrorEdit] = useState('')
+
 
 
   useEffect(() => {
@@ -61,16 +63,23 @@ export default function ToDoList() {
     setTodos(updateTodos)
   }
 
-  const editTodo = (id) => {
-    const updatedTodos = [...todos].map((todo) => {
-      if (todo.id === id) {
-        todo.text = editingText
-      }
-      return todo
-    })
-    setTodos(updatedTodos)
-    setTodoEditing(null)
-    setEditingText('')
+  const SubmitEditTodo = (id) => {
+    if(editingText.trim() === ''){
+      setErrorEdit('* please enter this field')
+    }else{
+      const updatedTodos = [...todos].map((todo) => {
+        if (todo.id === id) {
+          todo.text = editingText
+        }
+        return todo
+      })
+      setEditingText('')
+      setTodos(updatedTodos)
+      setTodoEditing(null)
+      setEditingText('')
+    }
+
+
   }
 
   const style = {
@@ -97,19 +106,26 @@ export default function ToDoList() {
         <p className='errorTodo'><small>{error ? error : ''}</small></p>
       </form>
       <ul>
-        {todos.map(todo => <li key={todo.id} style={style}>
+        {todos.map(todo => 
+        <li key={todo.id} style={style}>
           {
             todoEditing === todo.id
-              ? (<input type="text"
-                ref={editRef}
-                onChange={e => setEditingText(e.target.value)}
-                value={editingText}
-              />)
-              : (<div>{todo.text} &nbsp; &nbsp;</div>)
+              ? (<div>
+                <input 
+                  className='form-control form-input'
+                  type="text"
+                  ref={editRef}
+                  onChange={e => setEditingText(e.target.value)}
+                  value={editingText} 
+                />
+                <p><small style={{color:'red'}}>{errorEdit}</small></p>
+              </div>
+              )
+              : (<p>{todo.text}&nbsp; &nbsp;</p>)
           }
           {
             todoEditing === todo.id
-              ? (<button onClick={() => editTodo(todo.id)}>Submit Edits </button>)
+              ? (<button className='btn-hover color-main' onClick={() => SubmitEditTodo(todo.id)}>Submit Edits </button>)
 
               : (<>
                 <input type="checkbox"
