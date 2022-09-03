@@ -1,5 +1,5 @@
 # Getting Started with Create React App
-link deploy: test-intern-long.surge.sh
+link deploy:  http://test-intern-long.surge.sh/
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
