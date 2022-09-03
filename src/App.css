@@ -118,7 +118,11 @@ li {
   color: #29323c;
 
 }
-
+.errorTodo{
+  width: 300px;
+  margin-left: 230px;
+  color: red;
+}
 .error {
   display: block;
 }

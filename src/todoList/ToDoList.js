@@ -8,6 +8,8 @@ export default function ToDoList() {
   const [editingText, setEditingText] = useState('')
   const inputRef = useRef()
   const editRef = useRef()
+  const [error, setError] = useState('')
+
 
   useEffect(() => {
     const temp = localStorage.getItem('todos')
@@ -28,15 +30,20 @@ export default function ToDoList() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    inputRef.current.focus()
-    const newTodo = {
-      id: new Date().getTime(),
-      text: todo,
-      completed: false,
+    if(todo.trim()=== ''){
+      setError('* please enter this field')
+    }else{
+      setError('')
+      inputRef.current.focus()
+      const newTodo = {
+        id: new Date().getTime(),
+        text: todo,
+        completed: false,
+      }
+  
+      setTodos([...todos].concat(newTodo))
+      setTodo('')
     }
-
-    setTodos([...todos].concat(newTodo))
-    setTodo('')
   }
 
   const deleteTodo = (id) => {
@@ -51,7 +58,6 @@ export default function ToDoList() {
       }
       return todo
     })]
-
     setTodos(updateTodos)
   }
 
@@ -79,16 +85,16 @@ export default function ToDoList() {
       <form onSubmit={handleSubmit}>
         <input
           className='form-control form-input'
-          autoFocus
           placeholder='Add todo...'
-          style={{ marginBottom: '30px' }}
           type='text'
+          autoFocus
           ref={inputRef}
           value={todo}
 
           onChange={(e) => setTodo(e.target.value)}
         />
-        <button type='submit' className='btn-hover color-main'>Add Todo</button>
+        <button type='submit' className='btn-hover color-main' style={{marginBottom: 0}}>Add Todo</button>
+        <p className='errorTodo'><small>{error ? error : ''}</small></p>
       </form>
       <ul>
         {todos.map(todo => <li key={todo.id} style={style}>

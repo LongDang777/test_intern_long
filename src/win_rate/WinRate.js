@@ -118,7 +118,20 @@ export default function WinRate() {
   while (sumA > sumB && minusAB > arrA[0].win_rate) {
     let temp = arrA.shift()
     arrB.push(temp)
+    sumA = sum(arrA);
+    sumB = sum(arrB);
+    minusAB = Math.abs(sumA - sumB)
     if (arrA.length === 1) {
+      break;
+    }
+  }
+  while (sumB > sumA && minusAB > arrB[0].win_rate) {
+    let temp = arrB.shift()
+    arrA.push(temp)
+    sumA = sum(arrA);
+    sumB = sum(arrB);
+    minusAB = Math.abs(sumA - sumB)
+    if (arrB.length === 1) {
       break;
     }
   }
@@ -200,64 +213,64 @@ export default function WinRate() {
       </div>
 
       <div className='btnkq'>
-      {arrA != 0 ? <button className='btn-hover color-main'>  Kết quả 👉 </button> : ""}
+        {arrA != 0 ? <button className='btn-hover color-main'>  Kết quả 👉 </button> : ""}
       </div>
 
-      {arrA != 0 ? 
-      <div className='slipArr'>
-        <div className='nhomA'>
-          <h4>Nhóm A</h4>
-          <table className='table'>
-            <thead className='thead-dark'>
-              <tr>
-                <th>ID no</th>
-                <th>Name</th>
-                <th>Win_rate</th>
-              </tr>
-            </thead>
-            <tbody>
-              {arrA.map((a, index) => (
-                <tr key={index}>
-                  <th>{countA++}</th>
-                  <td> {a.name}</td>
-                  <td>{a.win_rate}%</td>
+      {arrA != 0 ?
+        <div className='slipArr'>
+          <div className='nhomA'>
+            <h4>Nhóm A</h4>
+            <table className='table'>
+              <thead className='thead-dark'>
+                <tr>
+                  <th>ID no</th>
+                  <th>Name</th>
+                  <th>Win_rate</th>
                 </tr>
-              ))}
-              <tr>
-                <th colSpan='2'>Tổng win_rate</th>
-                {arrA != 0 ? <th className='result btn-hover color-main'> {Math.round(sum(arrA) * 100) / 100}%</th> : ''}
-              </tr>
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {arrA.map((a, index) => (
+                  <tr key={index}>
+                    <th>{countA++}</th>
+                    <td> {a.name}</td>
+                    <td>{a.win_rate}%</td>
+                  </tr>
+                ))}
+                <tr>
+                  <th colSpan='2'>Tổng win_rate</th>
+                  {arrA != 0 ? <th className='result btn-hover color-main'> {Math.round(sum(arrA) * 100) / 100}%</th> : ''}
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <div className='nhomB'>
-          <h4>Nhóm B</h4>
-          <table className='table'>
-            <thead className='thead-dark'>
-              <tr>
-                <th>ID no</th>
-                <th>Name</th>
-                <th>Win_rate</th>
-              </tr>
-            </thead>
-            <tbody>
-              {arrB.map((b, index) => (
-                <tr key={index}>
-                  <th>{countB++}</th>
-                  <td> {b.name}</td>
-                  <td>{b.win_rate}%</td>
+          <div className='nhomB'>
+            <h4>Nhóm B</h4>
+            <table className='table'>
+              <thead className='thead-dark'>
+                <tr>
+                  <th>ID no</th>
+                  <th>Name</th>
+                  <th>Win_rate</th>
                 </tr>
-              ))}
-              <tr>
-                <th colSpan='2'>Tổng win_rate</th>
-                {arrB != 0 ? <th className='result btn-hover color-main'> {Math.round(sum(arrB) * 100) / 100}%</th> : ''}
-              </tr>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {arrB.map((b, index) => (
+                  <tr key={index}>
+                    <th>{countB++}</th>
+                    <td> {b.name}</td>
+                    <td>{b.win_rate}%</td>
+                  </tr>
+                ))}
+                <tr>
+                  <th colSpan='2'>Tổng win_rate</th>
+                  {arrB != 0 ? <th className='result btn-hover color-main'> {Math.round(sum(arrB) * 100) / 100}%</th> : ''}
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-      : ''}
+        : ''}
 
     </div>
   )
