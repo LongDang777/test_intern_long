@@ -181,9 +181,9 @@ export default function WinRate() {
               className='form-control form-input inputRate'
             />
             <button id='btnAdd' className='btn-hover color-main'>Thêm</button>
-            {objects.length === total && total > 0 ? '' : <small className='error' style={{ color: 'red' }}>{errorOb}</small>}
+            {objects.length === total && total > 0 || <small className='error' style={{ color: 'red' }}>{errorOb}</small>}
 
-            <h4>Số lượng đã nhập :  <b style={{ color: 'red' }}>{error === '' ? objects.length : ''}</b></h4>
+            <h4>Số lượng đã nhập :  <b style={{ color: 'red' }}>{error === '' && objects.length }</b></h4>
           </form>
         </div>
         <div className='ketQua'>
@@ -213,10 +213,10 @@ export default function WinRate() {
       </div>
 
       <div className='btnkq'>
-        {arrA != 0 ? <button className='btn-hover color-main'>  Kết quả 👉 </button> : ""}
+        {arrA != 0 && <button className='btn-hover color-main'>  Kết quả 👉 </button> }
       </div>
 
-      {arrA != 0 ?
+      {arrA != 0 &&
         <div className='slipArr'>
           <div className='nhomA'>
             <h4>Nhóm A</h4>
@@ -238,7 +238,7 @@ export default function WinRate() {
                 ))}
                 <tr>
                   <th colSpan='2'>Tổng win_rate</th>
-                  {arrA != 0 ? <th className='result btn-hover color-main'> {Math.round(sum(arrA) * 100) / 100}%</th> : ''}
+                  {arrA != 0 && <th className='result btn-hover color-main'> {Math.round(sum(arrA) * 100) / 100}%</th>}
                 </tr>
               </tbody>
             </table>
@@ -264,13 +264,13 @@ export default function WinRate() {
                 ))}
                 <tr>
                   <th colSpan='2'>Tổng win_rate</th>
-                  {arrB != 0 ? <th className='result btn-hover color-main'> {Math.round(sum(arrB) * 100) / 100}%</th> : ''}
+                  {arrB != 0 && <th className='result btn-hover color-main'> {Math.round(sum(arrB) * 100) / 100}%</th> }
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
-        : ''}
+        }
 
     </div>
   )

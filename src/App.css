@@ -185,14 +185,25 @@ cursor: default;
 
 
 /* todo list */
-.editTodos .form-input {
-  margin-top:  0;
-}
 
-.edit__input{
+.todo-row{
+  margin: 0 auto;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 500px;
+  border-bottom: 1px solid #485563;
 }
+.icons{
+  display: flex;
+  align-items: center;
+  align-content: flex-end;
+  justify-content: flex-end;
+}
+.todoText{
+  font-size: 25px;
+}
+
 .color-main.delete{
   background-image: linear-gradient(to right,
       #e15125,
@@ -204,9 +215,8 @@ cursor: default;
   
   border-radius: 10px;
 }
-.edit__input .btn-hover {
-  margin: 0;
+.complete .todoText{
+  opacity: 0.5;
+  background-color: #e0e1e2;
 }
-.todoText{
-  font-size: 22px;
-}
+

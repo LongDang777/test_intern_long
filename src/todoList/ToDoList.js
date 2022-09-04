@@ -1,150 +1,67 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { history } from '../App'
 
+import React, { useState } from 'react'
+import { useEffect } from 'react'
+import Todo from './Todo'
+import TodoForm from './TodoForm'
 
-export default function ToDoList() {
+export default function TodoListShow() {
 
-  const [todos, setTodos] = useState([])
-  const [todo, setTodo] = useState('')
-  const [todoEditing, setTodoEditing] = useState(null)
-  const [editingText, setEditingText] = useState('')
-  const inputRef = useRef()
-  const editRef = useRef()
-  const [error, setError] = useState('')
-  const [errorEdit, setErrorEdit] = useState('')
-
-
+  const [todos, setTodos] = useState(() => {
+    const storeTodosLocal = JSON.parse(localStorage.getItem('todoList'))
+    return storeTodosLocal
+  })
 
   useEffect(() => {
-    const temp = localStorage.getItem('todos')
-    const loadedTodos = JSON.parse(temp)
-    if (loadedTodos) {
-      setTodos(loadedTodos)
-    }
-  }, [])
-
-  useEffect(() => {
-    const temp = JSON.stringify(todos)
-    localStorage.setItem('todos', temp)
+    const jsonTodo = JSON.stringify(todos)
+    localStorage.setItem('todoList', jsonTodo)
   }, [todos])
 
-
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (todo.trim() === '') {
-      setError('* please enter this field')
-    } else {
-      setError('')
-      inputRef.current.focus()
-      const newTodo = {
-        id: new Date().getTime(),
-        text: todo,
-        completed: false,
-      }
-      setTodos([...todos].concat(newTodo))
-      setTodo('')
+  const addTodo = todo => {
+    if (!todo.text || /^\s*$/.test(todo.text)) {
+      return
     }
+    const newTodos = [todo, ...todos]
+    setTodos(newTodos)
   }
 
-  const deleteTodo = (id) => {
-    const updatedTodo = [...todos.filter(todo => todo.id !== id)]
-    setTodos(updatedTodo)
-  }
-
-  const toggleComplete = (id) => {
-    const updateTodos = [...todos.map(todo => {
+  const completeTodo = id => {
+    let updatedTodos = todos.map(todo => {
       if (todo.id === id) {
-        todo.completed = !todo.completed
+        todo.isComplete = !todo.isComplete
       }
       return todo
-    })]
-    setTodos(updateTodos)
+    })
+    setTodos(updatedTodos)
   }
 
-  const SubmitEditTodo = (id) => {
-    if (editingText.trim() === '') {
-      setErrorEdit('* please enter this field')
-    } else {
-      const updatedTodos = [...todos].map((todo) => {
-        if (todo.id === id) {
-          todo.text = editingText
-        }
-        return todo
-      })
-      setEditingText('')
-      setTodos(updatedTodos)
-      setTodoEditing(null)
-      setEditingText('')
+  const removeTodo = id => {
+    const deleteTodo = window.confirm('Do you want delete this ??')
+    const removeArr = todos.filter(todo => {
+      if(todo.id && deleteTodo){
+        return todo.id !== id
+      }
+      return -1
+    })
+    setTodos(removeArr)
+  }
+
+  const updateTodo = (todoId, newValue) => {
+    if (!newValue.text || /^\s*$/.test(newValue.text)) {
+      return
     }
+    setTodos(prev => prev.map((item) => (item.id === todoId ? newValue : item)))
   }
 
 
-  const style = {
-    marginTop: 20,
-    width: '50%',
-    marginLeft: '370px',
-    display: 'flex',
-  }
   return (
-    <div style={{ marginTop: '50px' }}>
-
-      <form onSubmit={handleSubmit}>
-        <input
-          className='form-control form-input'
-          placeholder='Add todo...'
-          type='text'
-          autoFocus
-          ref={inputRef}
-          value={todo}
-
-          onChange={(e) => setTodo(e.target.value)}
-        />
-        <button type='submit' className='btn-hover color-main' style={{ marginBottom: 0 }}>Add Todo</button>
-        <p className='errorTodo'><small>{error ? error : ''}</small></p>
-      </form>
-      <ul className='editTodos'>
-        {todos.map(todo =>
-          <li key={todo.id} style={style}>
-            {
-              todoEditing === todo.id
-                ? (<div className='edit'>
-                  <div className='edit__input'>
-                    <input
-                      className='form-control form-input'
-                      type="text"
-                      ref={editRef}
-                      onChange={e => setEditingText(e.target.value)}
-                      value={editingText}
-                    />
-                    <button className='btn-hover color-main' onClick={() => SubmitEditTodo(todo.id)}>Submit Edit</button>
-                    <button className='btn-hover color-main delete' onClick={() => window.location.reload()}>Exit</button>
-                  </div>
-                  <p><small style={{ color: 'red' }}>{errorEdit}</small></p>
-                </div>
-                )
-                : (<div>
-                  <div className='edit__input'>
-
-                  <p className='todoText'>{todo.text}&nbsp; &nbsp;</p>
-                  <input 
-                    style={{
-                      height:'30px',
-                      width :'30px',
-                    }}
-                  type="checkbox"
-                    onChange={() => toggleComplete(todo.id)}
-                    checked={todo.completed}
-                  /> &nbsp;&nbsp;
-                  <button className='btn-hover color-main' onClick={() => { setTodoEditing(todo.id) }}>Edit Toto</button>
-                  &nbsp; &nbsp;
-                  <button className='btn-hover color-main delete' onClick={() => deleteTodo(todo.id)}>X</button>
-                  </div>
-                </div>)
-            }
-          </li>)}
-      </ul>
-
+    <div>
+      <TodoForm onSubmit={addTodo} />
+      <Todo
+        todos={todos}
+        completeTodo={completeTodo}
+        removeTodo={removeTodo}
+        updateTodo={updateTodo}
+      />
     </div>
   )
 }
