@@ -8,7 +8,7 @@ export default function TodoListShow() {
 
   const [todos, setTodos] = useState(() => {
     const storeTodosLocal = JSON.parse(localStorage.getItem('todoList'))
-    return storeTodosLocal
+    return storeTodosLocal ?? []
   })
 
   useEffect(() => {
